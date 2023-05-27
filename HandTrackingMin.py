@@ -1,3 +1,4 @@
+##This is a standalone file to demonstrate the use of mediapipe to perform hand recognition
 import cv2
 import mediapipe as mp
 import time
