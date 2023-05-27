@@ -5,7 +5,7 @@ import pickle
 import DataFormatter as dp
 
 # Assuming you have your input vectors stored in 'X' and corresponding labels in 'y'
-X,y = dp.prepare_dataset(300,30,"processed_data")
+X,y = dp.prepare_dataset(500,"processed_data")
 
 # Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)

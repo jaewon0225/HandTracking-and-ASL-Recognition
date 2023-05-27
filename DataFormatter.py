@@ -17,10 +17,10 @@ def read_csv_to_list(csv_file, num_rows):
 def replicate_string(text, length):
     return [text] * length
 
-def prepare_dataset(train_size=300, test_size=30, data_directory="your/directory"):
+def prepare_dataset(size = 500, data_directory="your/directory"):
     X,y = [],[]
     for file in os.listdir(data_directory):
-        X+=read_csv_to_list(os.path.join(data_directory, file), train_size+test_size)
-        y+=replicate_string((str(file)[:-4]), train_size+test_size)
+        X+=read_csv_to_list(os.path.join(data_directory, file), size)
+        y+=replicate_string((str(file)[:-4]), size)
 
     return X,y
