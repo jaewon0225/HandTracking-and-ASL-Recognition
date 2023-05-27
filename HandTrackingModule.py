@@ -23,7 +23,7 @@ class handDetector():
     def findHands(self, img, draw=True):
         self.getResults(img)
 
-        if self.results.multi_hand_landmarks:
+        if self.results.multi_hand_world_landmarks:
             for handLms in self.results.multi_hand_landmarks:
                 if draw:
                     self.mpDraw.draw_landmarks(img, handLms, self.mpHands.HAND_CONNECTIONS)
@@ -33,8 +33,8 @@ class handDetector():
         self.getResults(img)
 
         lmList = []
-        if self.results.multi_hand_landmarks:
-            myHand = self.results.multi_hand_landmarks[handNum]
+        if self.results.multi_hand_world_landmarks:
+            myHand = self.results.multi_hand_world_landmarks[handNum]
             h, w, c = img.shape
 
             for id, lm in enumerate(myHand.landmark):
