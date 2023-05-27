@@ -1,7 +1,7 @@
 import cv2
 import mediapipe as mp
 import time
-
+import numpy as np
 
 class handDetector():
     def __init__(self, mode=False, maxHands=2, modelComplexity=1, detectionCon=0.5, trackCon=0.5):
@@ -29,22 +29,32 @@ class handDetector():
                     self.mpDraw.draw_landmarks(img, handLms, self.mpHands.HAND_CONNECTIONS)
         return img
 
-    def findPosition(self, img, handNum=0, draw=True):
+    def findPosition(self, img, handNum=0, draw=True, coord = "Absolute"):
         self.getResults(img)
 
         lmList = []
         if self.results.multi_hand_landmarks:
             myHand = self.results.multi_hand_landmarks[handNum]
+            h, w, c = img.shape
 
             for id, lm in enumerate(myHand.landmark):
-                # print the id and the landmark location
-                h, w, c = img.shape
-                # convert to pixels
-                cx, cy, z = int(lm.x * w), int(lm.y * h), lm.z
-                lmList.append([id, cx, cy, z])
-                if draw:
-                    cv2.circle(img, (cx, cy), 15, (255, 0, 0), cv2.FILLED)
+                if coord == "Relative":
+                    # print the id and the landmark location
+                    # convert to pixels
+                    cx, cy, z = int(lm.x * w), int(lm.y * h), lm.z
+                    lmList.append([id, cx, cy, z])
+                else:
+                    lmList.append([id, lm.x, lm.y, lm.z])
 
+                if draw:
+                    cv2.circle(img, (int(lm.x * w), int(lm.y * h)), 15, (255, 0, 0), cv2.FILLED)
+
+        if coord == "Normalized" and lmList:
+            n_factor = ((((lmList[0][1]-lmList[5][1])**2)+((lmList[0][2]-lmList[5][2])**2)+((lmList[0][3]-lmList[5][3])**2))**0.5)
+            wrist = lmList[0]
+            for list in lmList:
+                list[1:] = np.divide(np.array(list[1:]) - np.array(wrist[1:]),n_factor)
+            return lmList
         return lmList
 
 
@@ -56,10 +66,10 @@ def main():
     detector = handDetector()
     while cap.isOpened():
         success, img = cap.read()
-        # detector.findHands(img)
-        lmList = detector.findPosition(img, draw=False)
+        detector.findHands(img)
+        lmList = detector.findPosition(img, draw=False, coord="Normalized")
         if len(lmList):
-            print(lmList[4])
+            print(lmList)
 
         current_time = time.time()
         fps = 1 / (current_time - previous_time)
