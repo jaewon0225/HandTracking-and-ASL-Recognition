@@ -1,7 +1,8 @@
 import pickle
 import HandTrackingModule as hp
 import cv2
-import time
+
+# Test your model in a live camera feed
 
 # load the model from disk
 loaded_model = pickle.load(open('knnpickle_file', 'rb'))
