@@ -3,6 +3,8 @@ import csv
 import os
 import HandTrackingModule as htm
 
+#Use this to extract hand landmarks from a given dataset and to store in csv format
+
 detector = htm.handDetector()
 
 directory = 'archive/asl_alphabet_train/asl_alphabet_train'

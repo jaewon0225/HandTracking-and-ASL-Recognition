@@ -1,6 +1,8 @@
 import csv
 import os
 
+#Functions in this file help prep the processed data to be used in training and testing
+
 def read_csv_to_list(csv_file, num_rows):
     data = []
     with open(csv_file, 'r') as file:
